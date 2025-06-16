@@ -8,6 +8,18 @@ body {
   overflow: hidden;
 }
 
+@layer base {
+  /* Reset และกำหนดค่าพื้นฐาน */
+  html,
+  body {
+    @apply bg-gray-50 h-full overflow-hidden;
+  }
+
+  #__next {
+    @apply h-full;
+  }
+}
+
 @font-face {
   font-family: "Sarabun";
   src: url("../public/fonts/PlaypenSansThai-VariableFont_wght.ttf") format("truetype");
@@ -59,7 +71,30 @@ body {
     @apply px-4 py-3 text-sm text-gray-900 border-b border-gray-100;
   }
 
-  .table tr:hover {
-    @apply bg-gray-50;
+ /* Responsive table improvements */
+  @media (max-width: 768px) {
+    .table th,
+    .table td {
+      @apply px-2 py-2 text-xs;
+    }
+  }
+
+  /* Custom scrollbar for better UX */
+  .overflow-y-auto::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .overflow-y-auto::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 3px;
+  }
+
+  .overflow-y-auto::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+  }
+
+  .overflow-y-auto::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
   }
 }

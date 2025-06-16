@@ -24,7 +24,7 @@ export async function GET() {
         {
           $group: {
             _id: null,
-            total: { $sum: "$total" }
+            total: { $sum: "$totalAmount" }
           }
         }
       ]).toArray()
@@ -35,7 +35,7 @@ export async function GET() {
         {
           $group: {
             _id: null,
-            total: { $sum: "$total" }
+            total: { $sum: "$totalAmount" }
           }
         }
       ]).toArray()

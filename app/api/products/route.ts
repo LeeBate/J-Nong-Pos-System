@@ -22,21 +22,17 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const db = await getDatabase();
-    const body = await request.json();
+     const productData = await request.json()
 
-    const product: Omit<Product, "_id"> = {
-      ...body,
+    const result = await db.collection("products").insertOne({
+      ...productData,
       createdAt: new Date(),
       updatedAt: new Date(),
-    };
+    })
 
-    const result = await db.collection("products").insertOne(product);
-
-    return NextResponse.json({ _id: result.insertedId, ...product });
+    return NextResponse.json({ success: true, id: result.insertedId })
   } catch (error) {
-    return NextResponse.json(
-      { error: "Failed to create product" },
-      { status: 500 }
-    );
+    console.error("Error creating product:", error)
+    return NextResponse.json({ error: "Failed to create product" }, { status: 500 })
   }
 }
