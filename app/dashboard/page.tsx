@@ -69,6 +69,9 @@ export default function Dashboard() {
             <Link href="/reports" className="py-4 px-1 text-gray-500 hover:text-gray-700 transition-colors">
               รายงาน
             </Link>
+            <Link href="/charts" className="py-4 px-1 text-gray-500 hover:text-gray-700 transition-colors">
+              กราฟ
+            </Link>
           </div>
         </div>
       </nav>

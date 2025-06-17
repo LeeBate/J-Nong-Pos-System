@@ -81,6 +81,20 @@ export interface ModalContextType {
   showSuccess: (message: string, title?: string) => void
 }
 
+export interface DrillDownData {
+  type: "date" | "product"
+  title: string
+  data: any
+  details?: any[]
+}
+
+export interface DrillDownModalProps {
+  isOpen: boolean
+  onClose: () => void
+  drillDownData: DrillDownData | null
+}
+
+
 export interface Discount {
   type: "percentage" | "fixed" | "points"
   value: number
@@ -89,4 +103,65 @@ export interface Discount {
 
 export interface CartItem extends Product {
   quantity: number
+}
+
+export interface SalesReport {
+  totalSales: number
+  totalTransactions: number
+  averageTransaction: number
+  topProducts: Array<{
+    name: string
+    quantity: number
+    revenue: number
+  }>
+  dailySales: Array<{
+    date: string
+    sales: number
+    transactions: number
+  }>
+  dateRange?: {
+    startDate: string
+    endDate: string
+  }
+  debug?: {
+    salesFound: number
+    queryRange: string
+  }
+}
+
+export interface SalesData {
+  totalSales: number
+  totalCost: number
+  totalProfit: number
+  profitMargin: number
+  totalTransactions: number
+  averageTransaction: number
+  topProducts: Array<{
+    name: string
+    quantity: number
+    revenue: number
+    cost: number
+    profit: number
+    category: string
+  }>
+  categoryReport: Array<{
+    category: string
+    quantity: number
+    revenue: number
+    cost: number
+    profit: number
+    transactions: number
+  }>
+  dailySales: Array<{
+    date: string
+    sales: number
+    cost: number
+    profit: number
+    transactions: number
+  }>
+  dateRange: {
+    startDate: string
+    endDate: string
+  }
+  reportType: string
 }

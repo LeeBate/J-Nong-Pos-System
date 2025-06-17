@@ -405,13 +405,13 @@ export default function SalesPage() {
                       placeholder="ค้นหาสินค้า หรือ บาร์โค้ด..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      className="input pl-10"
+                      className="input pl-10 h-[48px]"
                     />
                   </div>
                   <select
                     value={selectedCategory}
                     onChange={(e) => setSelectedCategory(e.target.value)}
-                    className="input w-auto min-w-[150px]"
+                    className="input w-auto min-w-[150px] "
                   >
                     {categories.map((category) => (
                       <option key={category} value={category}>
@@ -421,8 +421,8 @@ export default function SalesPage() {
                   </select>
                 </div>
               </div>
-              <div className="p-3 xl:p-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 xl:gap-6 h-[33rem] xl:h-[33rem] overflow-y-auto">
+              <div className="p-3 xl:p-4 h-[34rem] xl:h-[52rem] overFlowAuto">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 xl:grid-cols-3 gap-3 xl:gap-6 overFlowAuto">
                   {filteredProducts.map((product) => (
                     <div
                       key={product._id}
@@ -467,7 +467,7 @@ export default function SalesPage() {
             {/* Cart Section */}
 
             <div className="card h-full">
-              <div className="p-2 border-b border-gray-200">
+              <div className="p-4 border-b border-gray-200">
                 <h2 className="text-lg font-semibold text-gray-900 flex items-center">
                   <ShoppingCart className="w-5 h-5 mr-2" />
                   ตะกร้าสินค้า
@@ -476,15 +476,15 @@ export default function SalesPage() {
               <div className="p-2">
                 <div className="flex flex-col justify-between h-[27rem] xl:h-[41rem]">
                   {/* Cart Items */}
-                  <div className="space-y-1 mb-4 h-full overflow-y-auto">
+                  <div className="space-y-1 mb-4 h-full overFlowAuto">
                     {cart.map((item) => (
                       <div
                         key={item._id}
                         className="flex items-center justify-between p-2 border border-gray-200 rounded-lg"
                       >
                         <div className="flex items-center space-x-3 flex-1">
-                          <div className="mr-2 w-[125px]">
-                            <h4 className="text-xs font-medium text-gray-900 truncate ">
+                          <div className="mr-2 w-[125px] xl:w-[215px]">
+                            <h4 className="text-md font-medium text-gray-900 truncate ">
                               {item.name}
                             </h4>
                             <p className="text-xs text-gray-600">

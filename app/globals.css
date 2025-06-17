@@ -71,6 +71,18 @@ body {
     @apply px-4 py-3 text-sm text-gray-900 border-b border-gray-100;
   }
 
+  .btn-report {
+    @apply space-x-2 px-4 py-2  xl:px-4 xl:py-2 rounded-lg border transition-all
+  }
+  
+  .hiddienIcon {
+    @apply hidden xl:inline-block;
+  }
+
+  .divResponsive {
+    @apply flex items-center justify-center xl:justify-between
+  }
+
  /* Responsive table improvements */
   @media (max-width: 768px) {
     .table th,
@@ -79,22 +91,26 @@ body {
     }
   }
 
+  .overFlowAuto {
+    overflow: auto;
+  }
+
   /* Custom scrollbar for better UX */
-  .overflow-y-auto::-webkit-scrollbar {
+  .overFlowAuto::-webkit-scrollbar {
     width: 6px;
   }
 
-  .overflow-y-auto::-webkit-scrollbar-track {
+  .overFlowAuto::-webkit-scrollbar-track {
     background: #f1f5f9;
     border-radius: 3px;
   }
 
-  .overflow-y-auto::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
+  .overFlowAuto::-webkit-scrollbar-thumb {
+    background: #1b0886;
     border-radius: 3px;
   }
 
-  .overflow-y-auto::-webkit-scrollbar-thumb:hover {
+  .overFlowAuto::-webkit-scrollbar-thumb:hover {
     background: #94a3b8;
   }
 }
