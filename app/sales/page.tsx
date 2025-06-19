@@ -20,6 +20,7 @@ import { useModal, useConfirm } from "@/hooks/useModal";
 import { CartItem, Customer, Discount, Product } from "@/lib/types";
 import PaymentModal, { type PaymentData } from "@/components/paymentModal";
 import ReceiptModal from "@/components/receiptModal";
+import { validatePhoneNumber } from "@/lib/utils";
 
 export default function SalesPage() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -73,6 +74,22 @@ export default function SalesPage() {
         type: "warning",
         title: "แจ้งเตือน",
         message: "กรุณากรอกเบอร์โทรศัพท์",
+        primaryButton: {
+          text: "ตกลง",
+          action: () => {
+            hideModal();
+          },
+          variant: "success",
+        },
+      });
+      return;
+    }
+
+    if (!validatePhoneNumber(customerPhone)) {
+      showModal({
+        type: "warning",
+        title: "แจ้งเตือน",
+        message: "กรุณากรอกเบอร์โทรศัพท์ให้ถูกต้อง (10 หลัก)",
         primaryButton: {
           text: "ตกลง",
           action: () => {
@@ -221,9 +238,33 @@ export default function SalesPage() {
               : item
           )
         );
+      } else {
+        showModal({
+          type: "warning",
+          title: "ไม่สามารถเพิ่มสินค้า",
+          message: `สินค้าคงเหลือไม่เพียงพอ (คงเหลือ ${product.stock} ชิ้น)`,
+          primaryButton: {
+            text: "ตกลง",
+            action: () => hideModal(),
+            variant: "success",
+          },
+        });
       }
     } else {
-      setCart([...cart, { ...product, quantity: 1 }]);
+      if (product.stock > 0) {
+        setCart([...cart, { ...product, quantity: 1 }]);
+      } else {
+        showModal({
+          type: "warning",
+          title: "ไม่สามารถเพิ่มสินค้า",
+          message: `สินค้าคงเหลือไม่เพียงพอ (คงเหลือ ${product.stock} ชิ้น)`,
+          primaryButton: {
+            text: "ตกลง",
+            action: () => hideModal(),
+            variant: "success",
+          },
+        });
+      }
     }
 
     // คำนวณส่วนลดใหม่เมื่อมีการเปลี่ยนแปลงตะกร้า
@@ -327,7 +368,6 @@ export default function SalesPage() {
 
       if (response.ok) {
         const result = await response.json();
-        console.log("result@@@", result);
         // สร้างข้อมูลใบเสร็จ
         const receipt = {
           receiptNumber: `R${Date.now().toString().slice(-8)}`,
@@ -641,7 +681,7 @@ export default function SalesPage() {
 
                   {/* Use Points */}
                   {customer?.points > 0 && (
-                    <div className="mt-3">
+                    <div className="mt-0">
                       <label className="block text-sm font-medium text-blue-700 mb-1">
                         ใช้คะแนน (1 คะแนน = 1 บาท)
                       </label>

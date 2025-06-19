@@ -176,7 +176,7 @@ export default function CustomersPage() {
           <div className="flex justify-between items-center py-4">
             <h1 className="text-2xl font-bold text-gray-900">จัดการลูกค้า</h1>
             <div className="flex space-x-4">
-              <button onClick={() => setShowAddForm(true)} className="btn btn-success">
+              <button onClick={() => setShowAddForm(true)} className="flex items-center btn btn-success">
                 <Plus className="w-4 h-4 mr-2" />
                 เพิ่มลูกค้า
               </button>

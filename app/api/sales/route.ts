@@ -1,6 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { getDatabase } from "@/lib/mongodb"
 import { formatThaiDateTime, convertToThaiTime } from "@/lib/utils"
+import { ObjectId } from "mongodb"
 
 // แก้ไขฟังก์ชัน getThaiDateTime()
 function getThaiDateTime() {
@@ -47,7 +48,7 @@ export async function POST(request: NextRequest) {
 
     // Update product stock
     for (const item of saleData.items) {
-      await db.collection("products").updateOne({ _id: item.productId }, { $inc: { stock: -item.quantity } })
+      await db.collection("products").updateOne({ _id:new ObjectId(item.productId)}, { $inc: { stock: -item.quantity } })
     }
 
     // Update customer data

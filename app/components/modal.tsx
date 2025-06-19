@@ -60,42 +60,42 @@ export default function Modal() {
       onClick={handleBackdropClick}
     >
       <div
-        className="bg-white rounded-lg shadow-2xl w-full max-w-md transform transition-all duration-300 ease-out animate-in fade-in zoom-in-95  border border-gray-200"
+        className=" bg-white rounded-lg shadow-2xl w-full max-w-xl xl:h-[20rem] transform transition-all duration-300 ease-out animate-in fade-in zoom-in-95  border border-gray-200"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="relative p-6 pb-4">
-          {config.closable !== false && (
+        <div className="relative p-6 pb-10 xl:pb-15">
+          {/* {config.closable !== false && (
             <button
               onClick={hideModal}
               className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
             >
               <X className="w-5 h-5" />
             </button>
-          )}
+          )} */}
 
-          <div className="flex items-start space-x-4">
+          <div className="flex flex-col justify-center items-center space-x-4">
             {/* Icon */}
-            <div className={`flex-shrink-0 w-12 h-12 rounded-full ${bgColor} flex items-center justify-center`}>
+            <div className={`absolute top-[-2.5rem] flex-shrink-0 w-20 h-20 rounded-full ${bgColor} flex items-center justify-center`}>
               <IconComponent className={`w-6 h-6 ${iconColor}`} />
             </div>
 
             {/* Content */}
-            <div className="flex-1 min-w-0">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">{config.title}</h3>
-              <p className="text-gray-600 text-sm leading-relaxed">{config.message}</p>
+            <div className="flex flex-col justify-center items-center min-w-0 mt-10">
+              <h3 className="text-2xl font-semibold text-gray-900 mb-2 xl:mb-8">{config.title}</h3>
+              <p className="text-gray-600 text-lg leading-relaxed">{config.message}</p>
             </div>
           </div>
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-4 bg-gray-50 rounded-b-lg">
-          <div className="flex flex-col-reverse sm:flex-row sm:justify-end space-y-2 space-y-reverse sm:space-y-0 sm:space-x-3">
+        <div className="px-6 py-4">
+          <div className="flex flex-col-reverse sm:flex-row sm:justify-center space-y-2 space-y-reverse sm:space-y-0 sm:space-x-3">
             {config.secondaryButton && (
               <button
                 onClick={config.secondaryButton.action}
                 className={`
-                  w-full sm:w-auto px-4 py-2 text-sm font-medium rounded-lg
+                  w-full sm:w-auto px-4 py-2 xl:px-8 xl:py-4 text-sm font-medium rounded-lg
                   transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2
                   ${buttonVariants[config.secondaryButton.variant || "secondary"]}
                 `}
@@ -108,7 +108,7 @@ export default function Modal() {
               <button
                 onClick={config.primaryButton.action}
                 className={`
-                  w-full sm:w-auto px-4 py-2 text-sm font-medium rounded-lg
+                  w-full sm:w-auto px-4 py-2 xl:px-6 xl:py-3 text-sm xl:text-lg font-medium rounded-lg
                   transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2
                   ${buttonVariants[config.primaryButton.variant || "primary"]}
                 `}
