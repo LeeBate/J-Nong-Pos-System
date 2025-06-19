@@ -3,13 +3,7 @@
 import { useState, useEffect } from "react"
 import { ShoppingCart, Package, Users, TrendingUp, DollarSign, BarChart3 } from 'lucide-react'
 import Link from "next/link"
-
-interface DashboardStats {
-  totalSales: number
-  totalProducts: number
-  totalCustomers: number
-  todaySales: number
-}
+import { DashboardStats } from "@/lib/types"
 
 export default function Dashboard() {
   const [stats, setStats] = useState<DashboardStats>({

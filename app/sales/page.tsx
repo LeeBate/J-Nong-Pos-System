@@ -37,6 +37,8 @@ export default function SalesPage() {
     phone: "",
     email: "",
     address: "",
+    dateOfBirth: "",
+    notes: "",
   });
 
   // Discount states
@@ -188,8 +190,39 @@ export default function SalesPage() {
     }
   };
 
+    const resetForm = () => {
+    setCustomerFormData({
+      name: "",
+      phone: "",
+      email: "",
+      address: "",
+      dateOfBirth: "",
+      notes: "",
+    })
+    setShowCustomerForm(false);
+    setCustomer(null);
+    setCustomerPhone("");
+  }
+
+
   const handleCustomerRegistration = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if(!validatePhoneNumber(customerFormData.phone)) {
+      showModal({
+        type: "warning",
+        title: "แจ้งเตือน",
+        message: "กรุณากรอกเบอร์โทรศัพท์ให้ถูกต้อง (10 หลัก)",
+        primaryButton: {
+          text: "ตกลง",
+          action: () => {
+            hideModal();
+          },
+          variant: "success",
+        },
+      });
+      return;
+    }
 
     try {
       const response = await fetch("/api/customers", {
@@ -197,11 +230,10 @@ export default function SalesPage() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          ...customerFormData,
-          points: 0,
-          membershipLevel: "Bronze",
-        }),
+           body: JSON.stringify({
+            ...customerFormData,
+            dateOfBirth: customerFormData.dateOfBirth ? new Date(customerFormData.dateOfBirth) : undefined,
+          }),
       });
 
       if (response.ok) {
@@ -209,8 +241,13 @@ export default function SalesPage() {
         setCustomer(newCustomer.customer);
         setCustomerPhone(customerFormData.phone);
         setShowCustomerForm(false);
-        setCustomerFormData({ name: "", phone: "", email: "", address: "" });
+        resetForm();
         showSuccess("สมัครสมาชิกสำเร็จ!");
+      }else if (response.status === 409) {
+        showError("เบอร์โทรศัพท์นี้มีผู้ใช้แล้ว กรุณาใช้เบอร์อื่น");
+      } else {
+        const errorData = await response.json();
+        showError(errorData.error || "เกิดข้อผิดพลาดในการสมัครสมาชิก");
       }
     } catch (error) {
       console.error("Error registering customer:", error);
@@ -748,7 +785,14 @@ export default function SalesPage() {
                 className="input"
                 required
               />
-              {/* <input
+                <input
+                  type="date"
+                  placeholder="วันเกิด (ไม่บังคับ)"
+                  value={customerFormData.dateOfBirth}
+                  onChange={(e) => setCustomerFormData({ ...customerFormData, dateOfBirth: e.target.value })}
+                  className="input"
+                />
+              <input
                 type="email"
                 placeholder="อีเมล (ไม่บังคับ)"
                 value={customerFormData.email}
@@ -761,7 +805,14 @@ export default function SalesPage() {
                 value={customerFormData.address}
                 onChange={(e) => setCustomerFormData({ ...customerFormData, address: e.target.value })}
                 className="input"
-              /> */}
+              />
+               <textarea
+                  placeholder="หมายเหตุ (ไม่บังคับ)"
+                  value={customerFormData.notes}
+                  onChange={(e) => setCustomerFormData({ ...customerFormData, notes: e.target.value })}
+                  className="input md:col-span-2"
+                  rows={3}
+                />
               <div className="flex space-x-4">
                 <button
                   type="button"

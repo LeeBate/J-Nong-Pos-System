@@ -1,64 +1,46 @@
-"use client"
-import { X, Printer, Download, Share2 } from "lucide-react"
-import type { PaymentData } from "@/components/paymentModal"
+"use client";
+import { ReceiptModalProps } from "@/lib/modalType";
+import { X, Printer, Download, Share2 } from "lucide-react";
 
-interface ReceiptItem {
-  name: string
-  price: number
-  quantity: number
-}
-
-interface ReceiptModalProps {
-  isOpen: boolean
-  onClose: () => void
-  receiptData: {
-    receiptNumber: string
-    date: Date
-    items: ReceiptItem[]
-    subtotal: number
-    discount: number
-    pointsUsed: number
-    total: number
-    payment: PaymentData
-    customer?: {
-      name: string
-      phone: string
-      membershipLevel: string
-      pointsEarned: number
-    }
-  }
-}
-
-export default function ReceiptModal({ isOpen, onClose, receiptData }: ReceiptModalProps) {
-  if (!isOpen) return null
+export default function ReceiptModal({
+  isOpen,
+  onClose,
+  receiptData,
+}: ReceiptModalProps) {
+  if (!isOpen) return null;
 
   const handlePrint = () => {
-    window.print()
-  }
+    window.print();
+  };
 
   const handleDownload = () => {
     // สร้าง PDF หรือ export ข้อมูล
-    alert("ฟีเจอร์ดาวน์โหลดจะพัฒนาในอนาคต")
-  }
+    alert("ฟีเจอร์ดาวน์โหลดจะพัฒนาในอนาคต");
+  };
 
   const handleShare = () => {
     if (navigator.share) {
       navigator.share({
         title: `ใบเสร็จ #${receiptData.receiptNumber}`,
         text: `ยอดรวม ฿${receiptData.total.toLocaleString()}`,
-      })
+      });
     } else {
-      alert("ฟีเจอร์แชร์จะพัฒนาในอนาคต")
+      alert("ฟีเจอร์แชร์จะพัฒนาในอนาคต");
     }
-  }
+  };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+    <div className="fixed inset-0 backdrop-blur-xs bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-lg shadow-xl w-full max-w-md max-h-[90vh] overFlowAuto">
         {/* Header */}
         <div className="flex justify-between items-center p-4 border-b border-gray-200">
-          <h3 className="text-lg font-semibold text-gray-900">ใบเสร็จรับเงิน</h3>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
+          <h3 className="text-lg font-semibold text-gray-900">
+            ใบเสร็จรับเงิน
+          </h3>
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-gray-600"
+          >
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -68,7 +50,9 @@ export default function ReceiptModal({ isOpen, onClose, receiptData }: ReceiptMo
           {/* Store Header */}
           <div className="text-center mb-6 border-b border-gray-200 pb-4">
             <h2 className="text-xl font-bold text-gray-900">ร้านค้าของเรา</h2>
-            <p className="text-sm text-gray-600">123 ถนนสุขุมวิท กรุงเทพฯ 10110</p>
+            <p className="text-sm text-gray-600">
+              123 ถนนสุขุมวิท กรุงเทพฯ 10110
+            </p>
             <p className="text-sm text-gray-600">โทร: 02-123-4567</p>
           </div>
 
@@ -119,7 +103,9 @@ export default function ReceiptModal({ isOpen, onClose, receiptData }: ReceiptMo
                   <tr key={index} className="border-b border-gray-100">
                     <td className="py-2">{item.name}</td>
                     <td className="text-center py-2">{item.quantity}</td>
-                    <td className="text-right py-2">฿{(item.price * item.quantity).toLocaleString()}</td>
+                    <td className="text-right py-2">
+                      ฿{(item.price * item.quantity).toLocaleString()}
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -164,11 +150,15 @@ export default function ReceiptModal({ isOpen, onClose, receiptData }: ReceiptMo
               <>
                 <div className="flex justify-between">
                   <span className="text-gray-600">เงินที่รับ:</span>
-                  <span>฿{receiptData.payment.receivedAmount.toLocaleString()}</span>
+                  <span>
+                    ฿{receiptData.payment.receivedAmount.toLocaleString()}
+                  </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">เงินทอน:</span>
-                  <span>฿{(receiptData.payment.change || 0).toLocaleString()}</span>
+                  <span>
+                    ฿{(receiptData.payment.change || 0).toLocaleString()}
+                  </span>
                 </div>
               </>
             )}
@@ -176,7 +166,9 @@ export default function ReceiptModal({ isOpen, onClose, receiptData }: ReceiptMo
             {receiptData.payment.reference && (
               <div className="flex justify-between">
                 <span className="text-gray-600">หมายเลขอ้างอิง:</span>
-                <span className="font-mono text-xs">{receiptData.payment.reference}</span>
+                <span className="font-mono text-xs">
+                  {receiptData.payment.reference}
+                </span>
               </div>
             )}
           </div>
@@ -192,7 +184,9 @@ export default function ReceiptModal({ isOpen, onClose, receiptData }: ReceiptMo
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">คะแนนที่ได้รับ:</span>
-                <span className="text-green-600 font-medium">+{receiptData.customer.pointsEarned} คะแนน</span>
+                <span className="text-green-600 font-medium">
+                  +{receiptData.customer.pointsEarned} คะแนน
+                </span>
               </div>
             </div>
           )}
@@ -230,5 +224,5 @@ export default function ReceiptModal({ isOpen, onClose, receiptData }: ReceiptMo
         </div>
       </div>
     </div>
-  )
+  );
 }

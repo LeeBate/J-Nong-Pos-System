@@ -2,6 +2,7 @@ import { type NextRequest, NextResponse } from "next/server"
 import { getDatabase } from "@/lib/mongodb"
 import { formatThaiDateTime, convertToThaiTime } from "@/lib/utils"
 import { ObjectId } from "mongodb"
+import { CustomerService } from "@/lib/customerService"
 
 // แก้ไขฟังก์ชัน getThaiDateTime()
 function getThaiDateTime() {
@@ -48,74 +49,74 @@ export async function POST(request: NextRequest) {
 
     // Update product stock
     for (const item of saleData.items) {
-      await db.collection("products").updateOne({ _id:new ObjectId(item.productId)}, { $inc: { stock: -item.quantity } })
+      await db
+        .collection("products")
+        .updateOne({ _id: new ObjectId(item.productId) }, { $inc: { stock: -item.quantity } })
     }
 
-    // Update customer data
+    // Update customer data using CustomerService
     if (saleData.customerId) {
-      const updateData: any = {
-        $set: {
-          lastPurchase: dateTime.utcDate,
-          thaiLastPurchase: dateTime.thaiDate,
-        },
-        $inc: {
-          totalPurchases: saleData.totalAmount,
-          points: saleData.pointsEarned - (saleData.pointsUsed || 0),
-        },
+      // อัปเดตยอดซื้อและระดับสมาชิก
+      await CustomerService.updatePurchaseAmount(saleData.customerId, saleData.totalAmount)
+
+      // เพิ่มแต้มถ้ามี
+      if (saleData.pointsEarned > 0) {
+        await CustomerService.addPoints(
+          saleData.customerId,
+          saleData.pointsEarned,
+          `ได้รับแต้มจากการซื้อสินค้า ฿${saleData.totalAmount.toLocaleString()}`,
+          saleResult.insertedId.toString(),
+        )
       }
 
-      const customer = await db.collection("customers").findOne({ _id: saleData.customerId })
-      if (customer) {
-        const newTotalPurchases = customer.totalPurchases + saleData.totalAmount
-
-        // Update membership level based on total purchases
-        let newMembershipLevel = "Bronze"
-        if (newTotalPurchases >= 50000) {
-          newMembershipLevel = "Platinum"
-        } else if (newTotalPurchases >= 20000) {
-          newMembershipLevel = "Gold"
-        } else if (newTotalPurchases >= 5000) {
-          newMembershipLevel = "Silver"
-        }
-
-        updateData.$set.membershipLevel = newMembershipLevel
+      // หักแต้มถ้ามีการใช้
+      if (saleData.pointsUsed > 0) {
+        await CustomerService.redeemPoints(
+          saleData.customerId,
+          saleData.pointsUsed,
+          `ใช้แต้มลดราคา ฿${saleData.pointsUsed.toLocaleString()}`,
+          saleResult.insertedId.toString(),
+        )
       }
-
-      await db.collection("customers").updateOne({ _id: saleData.customerId }, updateData)
     } else if (saleData.customerName && saleData.customerPhone) {
       // Create or update customer without ID
-      await db.collection("customers").updateOne(
-        { phone: saleData.customerPhone },
-        {
-          $set: {
+      try {
+        const existingCustomer = await CustomerService.findByPhone(saleData.customerPhone)
+        if (existingCustomer) {
+          await CustomerService.updatePurchaseAmount(existingCustomer._id!, saleData.totalAmount)
+          if (saleData.pointsEarned > 0) {
+            await CustomerService.addPoints(
+              existingCustomer._id!,
+              saleData.pointsEarned,
+              `ได้รับแต้มจากการซื้อสินค้า ฿${saleData.totalAmount.toLocaleString()}`,
+              saleResult.insertedId.toString(),
+            )
+          }
+        } else {
+          // สร้างลูกค้าใหม่
+          const newCustomer = await CustomerService.createCustomer({
             name: saleData.customerName,
             phone: saleData.customerPhone,
-            lastPurchase: dateTime.utcDate,
-            thaiLastPurchase: dateTime.thaiDate,
-          },
-          $inc: {
-            totalPurchases: saleData.totalAmount,
-          },
-          $setOnInsert: {
-            points: 0,
-            membershipLevel: "Bronze",
-            createdAt: dateTime.utcDate,
-            thaiCreatedAt: dateTime.thaiDate,
-          },
-        },
-        { upsert: true },
-      )
+          })
+          await CustomerService.updatePurchaseAmount(newCustomer._id!, saleData.totalAmount)
+          if (saleData.pointsEarned > 0) {
+            await CustomerService.addPoints(
+              newCustomer._id!,
+              saleData.pointsEarned,
+              `ได้รับแต้มจากการซื้อสินค้า ฿${saleData.totalAmount.toLocaleString()}`,
+              saleResult.insertedId.toString(),
+            )
+          }
+        }
+      } catch (error) {
+        console.error("Error handling customer data:", error)
+      }
     }
 
     return NextResponse.json({
       success: true,
       id: saleResult.insertedId,
       thaiDateTime: dateTime.thaiDateString, // ส่งกลับเวลาไทยเพื่อตรวจสอบ
-      // debug: {
-      //   utc: dateTime.utcDate.toISOString(),
-      //   thai: dateTime.thaiDate.toISOString(),
-      //   thaiString: dateTime.thaiDateString,
-      // },
     })
   } catch (error) {
     console.error("Error processing sale:", error)

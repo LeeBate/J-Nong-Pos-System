@@ -1,36 +1,44 @@
 import { type NextRequest, NextResponse } from "next/server"
-import { getDatabase } from "@/lib/mongodb"
+import { CustomerService } from "@/lib/customerService"
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    const db = await getDatabase()
-    const customers = await db.collection("customers").find({}).toArray()
+    const { searchParams } = new URL(request.url)
+    const page = Number.parseInt(searchParams.get("page") || "1")
+    const limit = Number.parseInt(searchParams.get("limit") || "50")
+    const search = searchParams.get("search")
 
-    return NextResponse.json(customers)
+    if (search) {
+      const customers = await CustomerService.searchCustomers(search)
+      return NextResponse.json(customers)
+    }
+
+    const result = await CustomerService.getAllCustomers(page, limit)
+    return NextResponse.json(result)
   } catch (error) {
     console.error("Error fetching customers:", error)
     return NextResponse.json({ error: "Failed to fetch customers" }, { status: 500 })
   }
 }
 
-// Update the POST function to include points and membershipLevel
 export async function POST(request: NextRequest) {
   try {
-    const db = await getDatabase()
     const customerData = await request.json()
 
-    const result = await db.collection("customers").insertOne({
-      ...customerData,
-      totalPurchases: 0,
-      points: 0,
-      membershipLevel: "Bronze",
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    })
+    // ตรวจสอบข้อมูลที่จำเป็น
+    if (!customerData.name || !customerData.phone) {
+      return NextResponse.json({ error: "Name and phone are required" }, { status: 400 })
+    }
 
-    const newCustomer = await db.collection("customers").findOne({ _id: result.insertedId })
+    // ตรวจสอบว่าเบอร์โทรซ้ำหรือไม่
+    const existingCustomer = await CustomerService.findByPhone(customerData.phone)
+    if (existingCustomer) {
+      return NextResponse.json({ error: "Phone number already exists" }, { status: 409 })
+    }
 
-    return NextResponse.json({ success: true, id: result.insertedId, customer: newCustomer })
+    const newCustomer = await CustomerService.createCustomer(customerData)
+
+    return NextResponse.json({ success: true, customer: newCustomer })
   } catch (error) {
     console.error("Error creating customer:", error)
     return NextResponse.json({ error: "Failed to create customer" }, { status: 500 })

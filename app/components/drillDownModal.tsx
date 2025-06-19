@@ -3,16 +3,7 @@
 import type React from "react"
 import { useState, useEffect } from "react"
 import { Calendar, Package } from 'lucide-react'
-
-interface DrillDownModalProps {
-  isOpen: boolean
-  onClose: () => void
-  drillDownData: {
-    type: string
-    title: string
-    data: any
-  } | null
-}
+import { DrillDownModalProps } from "@/lib/types"
 
 const DrillDownModal: React.FC<DrillDownModalProps> = ({ isOpen, onClose, drillDownData }) => {
   const [details, setDetails] = useState<any>(null)

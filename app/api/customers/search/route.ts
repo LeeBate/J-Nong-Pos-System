@@ -1,5 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server"
-import { getDatabase } from "@/lib/mongodb"
+import { CustomerService } from "@/lib/customerService"
 
 export async function GET(request: NextRequest) {
   try {
@@ -10,8 +10,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Phone number is required" }, { status: 400 })
     }
 
-    const db = await getDatabase()
-    const customer = await db.collection("customers").findOne({ phone })
+    const customer = await CustomerService.findByPhone(phone)
 
     if (!customer) {
       return NextResponse.json({ error: "Customer not found" }, { status: 404 })
