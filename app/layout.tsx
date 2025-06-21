@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { ModalProvider } from "@/contexts/ModalContext"
-import Modal from "@/components/modal"
+import { ModalProvider } from "@/contexts/ModalContext";
+import Modal from "@/components/modal";
 import "./globals.css";
+import { AuthProvider } from "./contexts/AuthContext";
 
 export const metadata: Metadata = {
   title: "POS - JNong",
@@ -16,10 +17,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <ModalProvider>
-          {children}
-          <Modal />
-        </ModalProvider>
+        <AuthProvider>
+          <ModalProvider>
+            {children}
+            <Modal />
+          </ModalProvider>
+        </AuthProvider>
       </body>
     </html>
   );

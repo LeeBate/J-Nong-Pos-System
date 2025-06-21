@@ -3,7 +3,7 @@
 import type React from "react"
 import { useState, useEffect } from "react"
 import { Calendar, Package } from 'lucide-react'
-import { DrillDownModalProps } from "@/lib/types"
+import { DrillDownModalProps } from "@/types/types"
 
 const DrillDownModal: React.FC<DrillDownModalProps> = ({ isOpen, onClose, drillDownData }) => {
   const [details, setDetails] = useState<any>(null)

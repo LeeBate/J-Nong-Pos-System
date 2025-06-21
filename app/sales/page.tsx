@@ -17,7 +17,7 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import { useModal, useConfirm } from "@/hooks/useModal";
-import { CartItem, Customer, Discount, Product } from "@/lib/types";
+import { CartItem, Customer, Discount, Product } from "@/types/types";
 import PaymentModal, { type PaymentData } from "@/components/paymentModal";
 import ReceiptModal from "@/components/receiptModal";
 import { validatePhoneNumber } from "@/lib/utils";

@@ -2,7 +2,7 @@ import { type NextRequest, NextResponse } from "next/server"
 import { getDatabase } from "@/lib/mongodb"
 import { formatThaiDateTime, convertToThaiTime } from "@/lib/utils"
 import { ObjectId } from "mongodb"
-import { CustomerService } from "@/lib/customerService"
+import { CustomerService } from "@/services/customerService"
 
 // แก้ไขฟังก์ชัน getThaiDateTime()
 function getThaiDateTime() {

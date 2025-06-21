@@ -1,5 +1,5 @@
 "use client";
-import { ReceiptModalProps } from "@/lib/modalType";
+import { ReceiptModalProps } from "@/types/modalType";
 import { X, Printer, Download, Share2 } from "lucide-react";
 
 export default function ReceiptModal({

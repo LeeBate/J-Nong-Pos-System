@@ -1,6 +1,6 @@
 "use client"
 
-import { PaymentData, PaymentMethod, paymentMethods, PaymentModalProps } from "@/lib/paymentType"
+import { PaymentData, PaymentMethod, paymentMethods, PaymentModalProps } from "@/types/paymentType"
 import { CheckCircle, Clock, X } from "lucide-react"
 import type React from "react"
 import { useState } from "react"

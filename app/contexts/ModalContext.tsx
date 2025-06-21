@@ -1,6 +1,6 @@
 "use client"
 
-import { ModalConfig, ModalContextType } from "@/lib/types"
+import { ModalConfig, ModalContextType } from "@/types/types"
 import { createContext, useContext, useState, type ReactNode } from "react"
 
 const ModalContext = createContext<ModalContextType | undefined>(undefined)

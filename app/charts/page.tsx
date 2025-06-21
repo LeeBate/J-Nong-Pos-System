@@ -11,7 +11,7 @@ import {
 import Link from "next/link";
 import SalesChart from "@/components/charts/salesChart";
 import ProductChart from "@/components/charts/productChart";
-import { SalesReport } from "@/lib/types";
+import { SalesReport } from "@/types/types";
 
 export default function ReportsPage() {
   const [report, setReport] = useState<SalesReport | null>(null);

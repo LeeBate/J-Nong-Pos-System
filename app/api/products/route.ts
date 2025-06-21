@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { getDatabase } from "@/lib/mongodb";
-import type { Product } from "@/lib/types";
+import type { Product } from "@/types/types";
 
 export async function GET() {
   try {

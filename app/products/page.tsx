@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import { Product } from "@/lib/types";
+import { Product } from "@/types/types";
 
 export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);

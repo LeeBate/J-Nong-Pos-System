@@ -14,9 +14,9 @@ import {
   Settings,
 } from "lucide-react";
 import Link from "next/link";
-import { getMembershipLevelInfo } from "@/lib/pointsSystem";
+import { getMembershipLevelInfo } from "@/services/pointsSystem";
 import CustomerPointsModal from "@/components/customerPointsModal";
-import { Customer, Sale } from "@/lib/types";
+import { Customer, Sale } from "@/types/types";
 
 export default function CustomersPage() {
   const [customers, setCustomers] = useState<Customer[]>([]);

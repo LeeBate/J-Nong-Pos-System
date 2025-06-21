@@ -1,9 +1,11 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { ShoppingCart, Package, Users, TrendingUp, DollarSign, BarChart3 } from 'lucide-react'
+import { ShoppingCart, Package, Users, TrendingUp, DollarSign, BarChart3 } from "lucide-react"
 import Link from "next/link"
-import { DashboardStats } from "@/lib/types"
+import ProtectedRoute from "@/components/protectedRoute"
+import UserMenu from "@/components/userMenu"
+import { DashboardStats } from "@/types/types"
 
 export default function Dashboard() {
   const [stats, setStats] = useState<DashboardStats>({
@@ -30,16 +32,19 @@ export default function Dashboard() {
   }
 
   return (
-    <>
+    <ProtectedRoute>
       {/* Header */}
       <header className="bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <h1 className="text-2xl font-bold text-gray-900">ระบบ POS</h1>
-            <Link href="/sales" className="btn btn-primary flex items-center ">
-              <ShoppingCart className="w-4 h-4 mr-2" />
-              <p>ขาย</p>
-            </Link>
+            <div className="flex items-center space-x-4">
+              <Link href="/sales" className="btn btn-primary flex items-center ">
+                <ShoppingCart className="w-4 h-4 mr-2" />
+                <p>ขาย</p>
+              </Link>
+              <UserMenu />
+            </div>
           </div>
         </div>
       </header>
@@ -171,6 +176,6 @@ export default function Dashboard() {
           </div>
         </div>
       </main>
-    </>
+    </ProtectedRoute>
   )
 }

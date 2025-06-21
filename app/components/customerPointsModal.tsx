@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { X, Star, Plus, Minus, History, Gift, TrendingUp } from "lucide-react";
-import { MEMBERSHIP_LEVELS, getMembershipLevelInfo } from "@/lib/pointsSystem";
-import { CustomerPointsModalProps, PointsTransaction } from "@/lib/types";
+import {  getMembershipLevelInfo } from "@/services/pointsSystem";
+import { CustomerPointsModalProps, PointsTransaction } from "@/types/types";
+import { MEMBERSHIP_LEVELS } from "@/types/pointsType";
 
 export default function CustomerPointsModal({
   isOpen,

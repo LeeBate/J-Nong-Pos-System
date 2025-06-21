@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import DrillDownModal from "@/components/drillDownModal";
-import { SalesData } from "@/lib/types";
+import { SalesData } from "@/types/types";
 
 type ReportType = "standard" | "category";
 

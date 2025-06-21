@@ -2,9 +2,7 @@
 import { getDatabase } from "@/lib/mongodb"
 import { ObjectId } from "mongodb"
 import { calculateMembershipLevel } from "./pointsSystem"
-import { Customer, PointsTransaction } from "./types"
-
-
+import { Customer, PointsTransaction } from "../types/types"
 
 export class CustomerService {
   // สร้างลูกค้าใหม่
